@@ -21,7 +21,7 @@ public class AnimalServiceTest {
 
     @Test
     public void serializeListTest() {
-        animalService.serialize(List.of(secondAnimal, thirdAnimal));
+        animalService.serialize(List.of(firstAnimal, secondAnimal, thirdAnimal));
     }
 
     @Test
