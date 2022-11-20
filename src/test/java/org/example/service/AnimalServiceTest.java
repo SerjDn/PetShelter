@@ -15,18 +15,25 @@ public class AnimalServiceTest {
     private final Animal thirdAnimal = new Animal("pig", true, "Pinky", 1);
 
     @Test
-    public void serializeTest() {
-        animalService.serialize(firstAnimal);
-    }
-
-    @Test
     public void serializeListTest() {
-        animalService.serialize(List.of(firstAnimal, secondAnimal, thirdAnimal));
+        animalService.serializeNew(firstAnimal);
+        animalService.serializeNew(secondAnimal);
+        animalService.serializeNew(thirdAnimal);
     }
 
     @Test
-    public void deserializeTest() {
-        Optional<Animal> deserialize = animalService.deserialize();
-        Assert.assertEquals(firstAnimal, deserialize.orElse(null));
+    public void deserializeListTest() {
+        List<Animal> animals = animalService.deserializeList();
+        Assert.assertEquals(List.of(firstAnimal, secondAnimal, thirdAnimal), animals);
+    }
+
+    @Test
+    public void removeAnimalTest() {
+        List<Animal> animalsBefore = animalService.deserializeList();
+        int sizeBefore = animalsBefore.size();
+        animalService.removeAnimal("Mew");
+        List<Animal> animalsAfter = animalService.deserializeList();
+        int sizeAfter = animalsAfter.size();
+        Assert.assertNotEquals(sizeBefore, sizeAfter);
     }
 }

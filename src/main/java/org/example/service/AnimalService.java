@@ -57,8 +57,7 @@ public class AnimalService {
     public List<Animal> deserializeList() {
         JsonMapper jsonMapper = new JsonMapper();
         try {
-            List<Animal> animals = jsonMapper.readValue(file, new TypeReference<>() {
-            });
+            List<Animal> animals = jsonMapper.readValue(file, new TypeReference<>() {});
             return animals;
         } catch (IOException e) {
             System.out.println("Can not read file: " + file);
@@ -71,11 +70,18 @@ public class AnimalService {
         try {
             List<Animal> animals = jsonMapper.readValue(file, new TypeReference<>() {
             });
+            int size = animals.size();
             for (int i = 0; i < animals.size(); i++) {
                 if (animals.get(i).getName().equals(name)) {
                     System.out.println(animals.get(i));
                     animals.remove(i);
                 }
+            }
+
+            if (animals.size() == size) {
+                System.out.println("There aren't animals with name " + name);
+            } else {
+                System.out.println("Congratulations! Take care of " + name + "!");
             }
 
             jsonMapper.writeValue(file, animals);
