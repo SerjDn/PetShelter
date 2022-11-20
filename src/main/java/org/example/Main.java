@@ -29,7 +29,7 @@ public class Main {
                     String name = scanner.next();
                     System.out.println("age:");
                     int age = scanner.nextInt();
-                    animalService.serializeNew(new Animal(type, gender, name, age));
+                    animalService.serializeList(new Animal(type, gender, name, age));
                 }
                 case 2 -> System.out.println(animalService.deserializeList());
                 case 3 -> {

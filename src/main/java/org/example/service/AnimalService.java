@@ -11,25 +11,7 @@ public class AnimalService {
 
     File file = new File("src/main/resources/animal.json");
 
-    public void serialize(Animal animal) {
-        JsonMapper jsonMapper = new JsonMapper();
-        try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, true))) {
-            jsonMapper.writeValue(printWriter, animal);
-        } catch (IOException e) {
-            System.out.println("Can not create file: " + file);
-        }
-    }
-
-    public void serialize(List<Animal> animals) {
-        JsonMapper jsonMapper = new JsonMapper();
-        try (PrintWriter printWriter = new PrintWriter(new FileWriter(file, true))) {
-            jsonMapper.writeValue(printWriter, animals);
-        } catch (IOException e) {
-            System.out.println("Can not create file: " + file);
-        }
-    }
-
-    public void serializeNew(Animal animal) {
+    public void serializeList(Animal animal) {
         JsonMapper jsonMapper = new JsonMapper();
         try {
             if (deserializeList() != null) {
@@ -44,21 +26,10 @@ public class AnimalService {
         }
     }
 
-    public Optional<Animal> deserialize() {
-        JsonMapper jsonMapper = new JsonMapper();
-        try {
-            return Optional.of(jsonMapper.readValue(file, Animal.class));
-        } catch (IOException e) {
-            System.out.println("Can not read file: " + file);
-            return Optional.empty();
-        }
-    }
-
     public List<Animal> deserializeList() {
         JsonMapper jsonMapper = new JsonMapper();
         try {
-            List<Animal> animals = jsonMapper.readValue(file, new TypeReference<>() {});
-            return animals;
+            return jsonMapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
             System.out.println("Can not read file: " + file);
             return null;
@@ -73,17 +44,31 @@ public class AnimalService {
             int size = animals.size();
             for (int i = 0; i < animals.size(); i++) {
                 if (animals.get(i).getName().equals(name)) {
-                    System.out.println(animals.get(i));
                     animals.remove(i);
                 }
             }
 
             if (animals.size() == size) {
-                System.out.println("There aren't animals with name " + name);
+                System.out.println("There aren't animals with name " + "<" + name + ">");
             } else {
-                System.out.println("Congratulations! Take care of " + name + "!");
+                System.out.println("Take care of " + "<" + name + ">" + "!");
             }
 
+            jsonMapper.writeValue(file, animals);
+        } catch (IOException e) {
+            System.out.println("Can not read file: " + file);
+        }
+    }
+
+    public void removeAll() {
+        JsonMapper jsonMapper = new JsonMapper();
+        try {
+            List<Animal> animals = jsonMapper.readValue(file, new TypeReference<>() {
+            });
+            for (int i = 0; i < animals.size(); i++) {
+                animals.remove(i);
+                i--;
+            }
             jsonMapper.writeValue(file, animals);
         } catch (IOException e) {
             System.out.println("Can not read file: " + file);

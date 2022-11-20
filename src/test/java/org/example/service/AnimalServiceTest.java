@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AnimalServiceTest {
 
@@ -16,15 +15,17 @@ public class AnimalServiceTest {
 
     @Test
     public void serializeListTest() {
-        animalService.serializeNew(firstAnimal);
-        animalService.serializeNew(secondAnimal);
-        animalService.serializeNew(thirdAnimal);
+        animalService.serializeList(firstAnimal);
+        animalService.serializeList(secondAnimal);
+        animalService.serializeList(thirdAnimal);
     }
 
     @Test
     public void deserializeListTest() {
+        animalService.removeAll();
+        animalService.serializeList(secondAnimal);
         List<Animal> animals = animalService.deserializeList();
-        Assert.assertEquals(List.of(firstAnimal, secondAnimal, thirdAnimal), animals);
+        Assert.assertEquals(List.of(secondAnimal), animals);
     }
 
     @Test
